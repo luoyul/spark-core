@@ -1,0 +1,34 @@
+[package]
+name = "spark-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+bytes = "1.5"
+tokio-util = { version = "0.7", features = ["codec"] }
+futures = "0.3"
+anyhow = "1.0"
+thiserror = "1.0"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+clap = { version = "4", features = ["derive"] }
+indicatif = "0.17"
+async-trait = "0.1"
+parking_lot = "0.12"
+crossbeam-deque = "0.8"
+
+# Platform-specific reqwest
+[target.'cfg(windows)'.dependencies]
+reqwest = { version = "0.11", features = ["stream", "gzip", "brotli", "native-tls"], default-features = false }
+windows-sys = { version = "0.52", features = ["Win32_System_IO", "Win32_Storage_FileSystem", "Win32_Foundation"] }
+
+[target.'cfg(not(windows))'.dependencies]
+reqwest = { version = "0.11", features = ["stream", "gzip", "brotli", "rustls-tls-webpki-roots"], default-features = false }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[dev-dependencies]
+tempfile = "3"
+crossbeam = "0.8"
